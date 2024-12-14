@@ -54,7 +54,7 @@ export default function Home() {
         onPressEnter={onPressEnter} 
         />
       </div> 
-      <div className="w-[50%] h-screen bg-[#0F141E] flex flex-col-reverse relative items-center jusrify-center  pb-[200px]">
+      <div className="w-[40%] h-screen bg-[#0F141E] flex flex-col-reverse relative items-center jusrify-center  pb-[200px]">
         <Card 
         value="night"  
         temperature={dayWeather.nightTemperature} 
