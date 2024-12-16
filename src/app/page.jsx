@@ -1,8 +1,6 @@
 "use client"
 import { SearchInput } from "./componant/SearchInput.jsx"; 
-import { SearchIcon } from "./componant/SearchIcon.jsx";
 import { Card } from "./componant/Card.jsx";
-import Image from "next/image";
 import { useEffect, useState } from "react"; 
 
 const API_KEY = '28f9714a181c403299b75845241312';
@@ -11,7 +9,11 @@ export default function Home() {
   const [search, setSearch] = useState(''); 
   const [city, setCity] = useState("ulaanbaatar"); 
   const [dayWeather, setDayWeather] = useState({
-   
+   dayTemperature:0,
+   dayCondition:'',
+   nightTemperature:0,
+   nightCondition:'',
+   date: ''
   });  
 
   const onChangeText = (event) => {
@@ -27,25 +29,28 @@ export default function Home() {
   }
   useEffect(() => {
     fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=1&aqi=no&alerts=no`
+      `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=1&aqi=no&alerts=no`
     ).then((response) => response.json())
     .then((data) => {
+      console.log(data)
       setDayWeather({
-        dayTemperature: data.forecast.forecastday[0].day.maxtemp_c,
+        dayTemperature: data.forecast.forecastday[0]?.day.maxtemp_c,
         dayCondition: data.forecast.forecastday[0].day.condition.text,
         nightTemperature: data.forecast.forecastday[0].day.mintemp_c,
-      })
-  
+        nightCondition: data.forecast.forecastday[0].hour[20].condition.text,
+        date: data.forecast.forecastday[0].date,
+      });
     });
   }, [city]); 
+
   return (
-    <div className="flex w-full h-screen">
-      <div className="w-[50%] h-screen bg-stone-50 flex flex-col-reverse items-center jusrify-center pb-[200px]">
+    <div className="flex w-full h-screen justify-center">
+      <div className="w-[40%] h-screen bg-[#F3F4F6] text-black flex flex-col-reverse items-center jusrify-center pb-[200px]">
         <Card 
         value="day" 
         temperature={dayWeather.dayTemperature} 
         condition={dayWeather.dayCondition} 
-        date="September 10, 2024" 
+        date={dayWeather.date} 
         cityName={city} 
         /> 
         <SearchInput 
@@ -54,15 +59,15 @@ export default function Home() {
         onPressEnter={onPressEnter} 
         />
       </div> 
-      <div className="w-[40%] h-screen bg-[#0F141E] flex flex-col-reverse relative items-center jusrify-center  pb-[200px]">
+
+      <div className="w-[40%] h-screen bg-[#0F141E] flex flex-col-reverse items-center jusrify-center  pb-[200px]">
         <Card 
         value="night"  
         temperature={dayWeather.nightTemperature} 
-        condition={dayWeather.dayCondition} 
-        date="September 10, 2024" 
+        condition={dayWeather.nightCondition} 
+        date={dayWeather.date} 
         cityName={city} 
         />
-      
       </div>
     </div> 
   );
