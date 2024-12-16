@@ -9,7 +9,7 @@ import { CiUser } from "react-icons/ci";
 export const Card = ({value, date, cityName, temperature, condition}) => {
     let statusStyle,   color,  conditionColor, colors, icon;
   let image = value === 'night' ? "/moon.png":'/sun.png'
-  if(value==="night"){
+  if(value==="night "){
       colors="bg-[#111827BF] bg-gradient-to-b from-[#111827] to-[#1F2937] text-white shadow-[#1F2937]"
       statusStyle="text-white"
       color="text-white"
